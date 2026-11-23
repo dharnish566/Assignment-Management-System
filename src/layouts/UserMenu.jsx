@@ -1,0 +1,4 @@
+import { LogOut, UserRound } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
+
+export default function UserMenu() { const { user, signOut } = useAuth(); const initials = user?.full_name?.split(' ').map((name) => name[0]).slice(0, 2).join('').toUpperCase(); return <div className="flex items-center gap-3"><div className="hidden text-right sm:block"><p className="text-sm font-medium text-ink">{user?.full_name}</p><p className="text-xs text-muted">{user?.role === 'ADMIN' ? 'Professor' : 'Student'}</p></div><div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-brand" title={user?.full_name}>{initials || <UserRound size={17} />}</div><button className="icon-button static h-9 w-9 rounded-md" aria-label="Sign out" onClick={signOut}><LogOut size={17} /></button></div>; }

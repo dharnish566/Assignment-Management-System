@@ -1,0 +1,14 @@
+import { Eye, EyeOff, LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import AuthShell from './AuthShell.jsx';
+import { useAuth } from '../../context/AuthContext.jsx';
+
+export default function RegisterPage() {
+  const { signUp, user, loading } = useAuth(); const [form, setForm] = useState({ fullName: '', email: '', studentId: '', password: '' }); const [showPassword, setShowPassword] = useState(false); const navigate = useNavigate();
+  if (user) return <Navigate to="/student" replace />;
+  const setField = (event) => setForm({ ...form, [event.target.name]: event.target.value });
+  async function submit(event) { event.preventDefault(); if (!/[A-Z]/.test(form.password) || !/[a-z]/.test(form.password) || !/\d/.test(form.password) || form.password.length < 8) { toast.error('Use at least 8 characters with uppercase, lowercase, and a number.'); return; } try { await signUp(form); toast.success('Your student account is ready.'); navigate('/student', { replace: true }); } catch (error) { toast.error(error.response?.data?.error?.message ?? 'Unable to create your account. Please try again.'); } }
+  return <AuthShell eyebrow="Student registration" title="Create your account" description="Join your course workspace with your college student ID."><form className="space-y-4" onSubmit={submit}><label className="block text-sm font-medium">Full name<input className="field mt-2" name="fullName" autoComplete="name" required value={form.fullName} onChange={setField} /></label><label className="block text-sm font-medium">College email<input className="field mt-2" name="email" type="email" autoComplete="email" required value={form.email} onChange={setField} /></label><label className="block text-sm font-medium">Student ID<input className="field mt-2" name="studentId" required value={form.studentId} onChange={setField} /></label><label className="block text-sm font-medium">Password<span className="relative mt-2 block"><input className="field pr-11" name="password" type={showPassword ? 'text' : 'password'} autoComplete="new-password" required value={form.password} onChange={setField} /><button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} className="icon-button" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button></span><span className="mt-1 block text-xs font-normal text-muted">8+ characters, including uppercase, lowercase, and a number.</span></label><button className="primary-button w-full" disabled={loading}>{loading ? <><LoaderCircle className="animate-spin" size={18} />Creating account…</> : 'Create student account'}</button><p className="text-center text-sm text-muted">Already registered? <Link className="font-semibold text-brand hover:text-brand-hover" to="/login">Sign in</Link></p></form></AuthShell>;
+}

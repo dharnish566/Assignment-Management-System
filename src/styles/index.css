@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-sidebar: #111827;
+  --color-canvas: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #111827;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-success: #15803d;
+  --color-warning: #b45309;
+  --color-danger: #dc2626;
+  --radius-card: 10px;
+  --radius-control: 8px;
+  --space-page: 32px;
+  font-family: Inter, system-ui, sans-serif;
+  color: #111827;
+  background: #f8fafc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input, textarea, select { font: inherit; }
+:focus-visible { outline: 3px solid rgb(37 99 235 / 35%); outline-offset: 2px; }
+
+@layer components {
+  .field { @apply block h-[42px] w-full rounded-control border border-border bg-white px-3 text-sm font-normal text-ink transition focus:border-brand focus:outline-none focus:ring-2 focus:ring-blue-100; }
+  .primary-button { @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-semibold text-white transition hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60; }
+  .secondary-button { @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-border bg-white px-4 text-sm font-semibold text-ink transition hover:bg-slate-50; }
+  .danger-button { @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-danger px-4 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60; }
+  .icon-button { @apply absolute right-0 top-0 flex h-[42px] w-11 items-center justify-center text-muted hover:text-ink; }
+}
