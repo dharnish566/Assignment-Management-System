@@ -13,11 +13,16 @@ import AssignmentFormPage from './pages/app/AssignmentFormPage.jsx';
 import AssignmentDetailsPage from './pages/app/AssignmentDetailsPage.jsx';
 import ProgressPage from './pages/app/ProgressPage.jsx';
 import AdminSubmissionsPage from './pages/app/AdminSubmissionsPage.jsx';
+import DropboxIntegrationPage from './pages/app/DropboxIntegrationPage.jsx';
+import DropboxCallbackPage from './pages/app/DropboxCallbackPage.jsx';
 import AnalyticsPage from './pages/app/AnalyticsPage.jsx';
 import LoginPage from './pages/auth/LoginPage.jsx';
 import RegisterPage from './pages/auth/RegisterPage.jsx';
 
-function Landing() { const { user } = useAuth(); return <Navigate to={user ? (user.role === 'ADMIN' ? '/admin' : '/student') : '/login'} replace />; }
+function Landing() {
+  const { user } = useAuth();
+  return <Navigate to={user ? (user.role === 'ADMIN' ? '/admin' : '/student') : '/login'} replace />;
+}
 
 export default function App() {
   return (
@@ -25,6 +30,12 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+
+      {/* Public Dropbox OAuth Callback fallbacks to prevent 404 errors */}
+      <Route path="/integrations/dropbox/callback" element={<DropboxCallbackPage />} />
+      <Route path="/api/integrations/dropbox/callback" element={<DropboxCallbackPage />} />
+      <Route path="/admin/integrations/dropbox/callback" element={<DropboxCallbackPage />} />
+
       <Route element={<ProtectedRoute />}>
         <Route element={<RoleProtectedRoute roles={['STUDENT']} />}>
           <Route element={<StudentLayout />}>
@@ -46,6 +57,7 @@ export default function App() {
             <Route path="/admin/assignments/:id" element={<AssignmentDetailsPage />} />
             <Route path="/admin/assignments/:id/edit" element={<AssignmentFormPage />} />
             <Route path="/admin/tracker" element={<AdminSubmissionsPage />} />
+            <Route path="/admin/integrations/dropbox" element={<DropboxIntegrationPage />} />
             <Route path="/admin/analytics" element={<AnalyticsPage />} />
             <Route path="/admin/profile" element={<WorkspacePage type="profile" />} />
           </Route>
